@@ -1,0 +1,15 @@
+site_name: tomiio's  Blog
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Projects:
+      - Autonomous Driving Vehicle: autonomous-car.md
+      - Embedded System:
+          - BLDC Motor Controller: bldc-driver.md
+      - Robotics:
+          - Autonomous Car: autonomous-car.md
+          - Autonomous Wheelchair: autonomous-wheelchair.md
+      - Embedded AI:
+          - Handsignator: handsignator.md
+  - Notes: notes.md
