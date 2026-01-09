@@ -950,15 +950,17 @@ This project is a 1:10 scale autonomous car platform designed to perform real-wo
 <hr />
 <h2 id="3-hardware">3. Hardware</h2>
 <h3 id="31-computing-units">3.1 Computing Units</h3>
+<p><img alt="alt text" src="../image.png" /></p>
 <ul>
 <li><strong>NVIDIA Jetson Xavier NX</strong><ul>
 <li>Runs Ubuntu + ROS</li>
-<li>Executes vision, AI inference, and planning</li>
+<li>Handle sensor input (fusion), AI inference, perception and decision making (motion planning and control command)</li>
 </ul>
 </li>
 <li><strong>STM32F401RE</strong><ul>
-<li>Handles low-level motor and steering control</li>
-<li>Interfaces with sensors (IMU, encoder, ultrasonic)</li>
+<li>Runs Mbed OS</li>
+<li>Handles low-level motor and steering control (from received control command)</li>
+<li>Interfaces with sensors (IMU, encoder, ultrasonic) and input to the Single Board Computer (Jetson Xavier NX)</li>
 </ul>
 </li>
 </ul>
@@ -980,8 +982,12 @@ This project is a 1:10 scale autonomous car platform designed to perform real-wo
 <td>Vehicle orientation and angular velocity</td>
 </tr>
 <tr>
-<td>Wheel encoder</td>
-<td>Velocity estimation</td>
+<td>Encoder</td>
+<td>Wheel angular velocity estimation</td>
+</tr>
+<tr>
+<td>V2X</td>
+<td>Position estimation</td>
 </tr>
 <tr>
 <td>Ultrasonic sensor</td>
@@ -990,34 +996,36 @@ This project is a 1:10 scale autonomous car platform designed to perform real-wo
 </tbody>
 </table>
 <h3 id="33-actuators">3.3 Actuators</h3>
+<p><img alt="alt text" src="../image-1.png" /></p>
 <ul>
 <li>BLDC motor + ESC (longitudinal control)</li>
 <li>Servo motor (steering, Ackermann geometry)</li>
 </ul>
 <hr />
 <h2 id="4-system-architecture">4. System Architecture</h2>
-<p><img alt="BFMC Logo" src="../assets/ProjectArch.png" />
+<p><img alt="alt text" src="../image-5.png" />
 The system is divided into the following modules:</p>
-<p>4.1. <strong>Perception</strong>
-   - Lane detection (camera-based, OpenCV/ML).
-   - Obstacle detection (ultrasonic sensors, LiDAR).
-   - Sign &amp; traffic light recognition.</p>
-<p>4.2. <strong>Planning</strong>
-   - Behavior planner (FSM-based).
-   - Global/local path generation.
-   - Obstacle avoidance &amp; lane switching.</p>
-<p>4.3. <strong>Control</strong>
-   - Low-level motor + steering control (PID &amp; Stanley/MPC).
-   - Safety overrides &amp; emergency stop.</p>
-<p>4.4. <strong>Hardware</strong>
-   - <strong>Car chassis</strong>: 1:10 RC model with differential steering.
-   - <strong>SBC</strong>: Raspberry Pi 5 + Jetson Xavier NX (vision &amp; ML tasks).
-   - <strong>MCU</strong>: STM32F4 for motor control + sensor integration.
-   - <strong>Sensors</strong>: Camera, ultrasonic, IMU, wheel encoders.</p>
+<p>4.1. <strong>Perception</strong></p>
+<ul>
+<li>Lane detection (camera-based, DBSCANS).</li>
+<li>Obstacle detection (ultrasonic sensors and Yolov8 Object detection).</li>
+<li>Signs &amp; traffic light recognition (Yolov8 Object detection).</li>
+</ul>
+<p>4.2. <strong>Planning</strong></p>
+<ul>
+<li>Behavior planner (FSM-based).</li>
+<li>Global/local path generation (Dijkstra search for global path and static path for local path).</li>
+<li>Obstacle avoidance &amp; lane switching.</li>
+</ul>
+<p>4.3. <strong>Actuator Control</strong></p>
+<ul>
+<li>Low-level motor + steering control (PID &amp; Stanley).</li>
+<li>Safety overrides &amp; emergency stop (Cruise control).</li>
+</ul>
 <hr />
 <h2 id="5-software-architecture-ros-based">5. Software Architecture (ROS-Based)</h2>
 <h3 id="51-ros-node-structure">5.1 ROS Node Structure</h3>
-<p><img alt="alt text" src="../ros_nodes.png" /></p>
+<p><img alt="alt text" src="../image-3.png" /></p>
 <h3 id="52-ros-topics">5.2 ROS Topics</h3>
 <table>
 <thead>
@@ -1028,19 +1036,43 @@ The system is divided into the following modules:</p>
 </thead>
 <tbody>
 <tr>
-<td><code>/automobile/image_raw</code></td>
-<td>Camera image</td>
+<td><code>/image_raw</code></td>
+<td>Camera raw image</td>
 </tr>
 <tr>
-<td><code>/lane/midpoint</code></td>
-<td>Lane center position</td>
+<td><code>/lanePerception</code></td>
+<td>Lane parameters output from Lane detection model</td>
 </tr>
 <tr>
-<td><code>/detected_objects</code></td>
-<td>YOLO detection results</td>
+<td><code>/trafficSigns</code></td>
+<td>Object parameters output from Object detection model</td>
 </tr>
 <tr>
-<td><code>/automobile/command</code></td>
+<td><code>/ultraSonic</code></td>
+<td>Ultrasonic distance detection data</td>
+</tr>
+<tr>
+<td><code>/imu</code></td>
+<td>IMU data</td>
+</tr>
+<tr>
+<td><code>/encoder</code></td>
+<td>Encoder data</td>
+</tr>
+<tr>
+<td><code>/gps</code></td>
+<td>GPS data</td>
+</tr>
+<tr>
+<td><code>/position</code></td>
+<td>Position estimation data</td>
+</tr>
+<tr>
+<td><code>/job</code></td>
+<td>Behavior command</td>
+</tr>
+<tr>
+<td><code>/command</code></td>
 <td>Speed &amp; steering command</td>
 </tr>
 </tbody>
