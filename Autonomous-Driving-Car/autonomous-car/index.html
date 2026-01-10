@@ -427,72 +427,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-input-and-pre-processing" class="md-nav__link">
+  <a href="#62-camera-based-scene-understanding" class="md-nav__link">
     <span class="md-ellipsis">
-      6.2 Input and Pre-processing
+      6.2 Camera-based scene understanding
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-lane-detection-methodology" class="md-nav__link">
+  <a href="#63-obstacles-avoidance" class="md-nav__link">
     <span class="md-ellipsis">
-      6.3 Lane Detection Methodology
+      6.3 Obstacles Avoidance
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#64-illumination-handling" class="md-nav__link">
+  <a href="#63-positioning" class="md-nav__link">
     <span class="md-ellipsis">
-      6.4 Illumination Handling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-object-and-traffic-sign-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.5 Object and Traffic Sign Detection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#66-traffic-light-recognition" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.6 Traffic Light Recognition
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#67-intersection-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.7 Intersection Detection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#68-ros-based-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.8 ROS-Based Integration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#69-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.9 Summary
+      6.3 Positioning
     </span>
   </a>
   
@@ -794,72 +749,27 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#62-input-and-pre-processing" class="md-nav__link">
+  <a href="#62-camera-based-scene-understanding" class="md-nav__link">
     <span class="md-ellipsis">
-      6.2 Input and Pre-processing
+      6.2 Camera-based scene understanding
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#63-lane-detection-methodology" class="md-nav__link">
+  <a href="#63-obstacles-avoidance" class="md-nav__link">
     <span class="md-ellipsis">
-      6.3 Lane Detection Methodology
+      6.3 Obstacles Avoidance
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#64-illumination-handling" class="md-nav__link">
+  <a href="#63-positioning" class="md-nav__link">
     <span class="md-ellipsis">
-      6.4 Illumination Handling
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#65-object-and-traffic-sign-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.5 Object and Traffic Sign Detection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#66-traffic-light-recognition" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.6 Traffic Light Recognition
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#67-intersection-detection" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.7 Intersection Detection
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#68-ros-based-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.8 ROS-Based Integration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#69-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.9 Summary
+      6.3 Positioning
     </span>
   </a>
   
@@ -1003,7 +913,7 @@ This project is a 1:10 scale autonomous car platform designed to perform real-wo
 </ul>
 <hr />
 <h2 id="4-system-architecture">4. System Architecture</h2>
-<p><img alt="alt text" src="../image-5.png" />
+<p><img alt="alt text" src="../image-2.png" />
 The system is divided into the following modules:</p>
 <p>4.1. <strong>Perception</strong></p>
 <ul>
@@ -1081,30 +991,11 @@ The system is divided into the following modules:</p>
 <h2 id="6-perception">6. Perception</h2>
 <h3 id="61-overview">6.1 Overview</h3>
 <p>The Perception module provides real-time environmental understanding for the autonomous vehicle. Its primary functions include lane detection, object and traffic sign recognition, traffic light state estimation, and intersection detection. The output of this module supplies structured information to the planning and control layers through ROS topics.</p>
-<h3 id="62-input-and-pre-processing">6.2 Input and Pre-processing</h3>
-<p>A forward-facing RGB camera is used as the primary perception sensor. Captured frames are pre-processed using grayscale conversion, Gaussian filtering, and edge enhancement to improve robustness against noise and illumination variation.</p>
-<h3 id="63-lane-detection-methodology">6.3 Lane Detection Methodology</h3>
-<p>Lane detection is implemented using a classical computer vision pipeline combined with clustering:</p>
-<ul>
-<li>Edge extraction is performed using Sobel and Canny operators.</li>
-<li>Line candidates are extracted using the Hough Transform.</li>
-<li>DBSCAN clustering groups fragmented lane segments and removes noise.</li>
-<li>Left and right lane boundaries are identified, and the lane center is computed as the midpoint.</li>
-</ul>
-<p>The method supports both solid and dashed lane markings and provides a stable middle-point reference for lateral control.</p>
-<h3 id="64-illumination-handling">6.4 Illumination Handling</h3>
-<p>To reduce the impact of glare and uneven lighting, histogram-based intensity correction is applied during pre-processing. This step improves the reliability of both lane detection and object recognition under challenging lighting conditions.</p>
-<h3 id="65-object-and-traffic-sign-detection">6.5 Object and Traffic Sign Detection</h3>
-<p>Object detection is performed using a YOLOv8 deep learning model fine-tuned on a custom dataset. Detected objects include traffic signs, vehicles, pedestrians, traffic lights, and intersections.</p>
-<p>To improve classification accuracy for traffic signs, a lightweight secondary classifier is applied to verify YOLO detections.</p>
-<h3 id="66-traffic-light-recognition">6.6 Traffic Light Recognition</h3>
-<p>Traffic light states are determined either directly through the detection model or via image-based color analysis within detected traffic light regions. This hybrid approach ensures robust recognition while maintaining real-time performance.</p>
-<h3 id="67-intersection-detection">6.7 Intersection Detection</h3>
-<p>Intersections are detected by combining visual features from the perception pipeline with vehicle localization data. This information is used to determine feasible maneuvers and is forwarded to the planning module.</p>
-<h3 id="68-ros-based-integration">6.8 ROS-Based Integration</h3>
-<p>The perception system is implemented as a set of ROS nodes, each responsible for a specific task such as image acquisition, lane detection, or object recognition. Communication between nodes is handled through standard ROS topics, enabling modularity and scalability.</p>
-<h3 id="69-summary">6.9 Summary</h3>
-<p>The perception module integrates classical vision techniques and deep learning to deliver reliable lane, object, and intersection information. Its modular ROS-based design allows real-time operation and seamless integration with planning and control components.</p>
+<h3 id="62-camera-based-scene-understanding">6.2 Camera-based scene understanding</h3>
+<hr />
+<h3 id="63-obstacles-avoidance">6.3 Obstacles Avoidance</h3>
+<hr />
+<h3 id="63-positioning">6.3 Positioning</h3>
 <hr />
 <h2 id="7-planning">7. Planning</h2>
 <hr />
@@ -1113,6 +1004,8 @@ The system is divided into the following modules:</p>
 <h2 id="9-validation">9. Validation</h2>
 <hr />
 <h2 id="10-final-result">10. Final result</h2>
+<video controls src="qualification.mp4" title="Title"></video>
+
 <hr />
 
 
